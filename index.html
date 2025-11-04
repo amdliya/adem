@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdeM's Core - Sistem Manajemen Pembelajaran</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Semua style dan script dari dokumen asli Anda, plus modifikasi untuk Apps Script -->
+    <style>
+        /* Paste semua CSS dari <DOCUMENT> asli di sini */
+        body { box-sizing: border-box; }
+        .login-container { /* ... */ }
+        /* ... (seluruh CSS dari file asli) ... */
+    </style>
+</head>
+<body class="bg-purple-50 h-full">
+    <!-- Seluruh HTML body dari <DOCUMENT> asli -->
+    <div id="loginContainer" class="login-container">
+        <!-- Form login -->
+    </div>
+    <!-- Main app sections -->
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzb1GA8XKP3r_yWykCV8aqi-u79Q6gPc8h4-TzaqU3cnhc5vlZY-9AoQY5bsP8pJe4/exec'; // Ganti dengan URL Anda nanti
+        let authToken = null;
+        
+        // Modifikasi handleLogin
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            fetch(`${APPS_SCRIPT_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`)
+              .then(res => res.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  authToken = data.token;
+                  document.getElementById('loginContainer').style.display = 'none';
+                  document.getElementById('mainApp').classList.add('authenticated');
+                  loadData();
+                } else {
+                  document.getElementById('loginError').classList.remove('hidden');
+                }
+              })
+              .catch(err => alert('Error: ' + err));
+        }
+        
+        // loadData modifikasi
+        function loadData() {
+          fetch(`${APPS_SCRIPT_URL}?action=getAllData&token=${authToken}`)
+            .then(res => res.json())
+            .then(data => {
+              // Assign data ke variables global seperti classesData, studentsData, dll.
+              classesData = data.classes || [];
+              // ... (seluruh assignment dari loadData asli)
+              // Update UI: updateDashboard(), dll.
+            })
+            .catch(err => console.error(err));
+        }
+        
+        // saveData modifikasi
+        function saveData() {
+          const allData = { /* Kumpul semua data seperti di asli */ };
+          fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(allData)
+          })
+          .then(res => res.json())
+          .then(data => { if (data.status !== 'success') alert('Save error'); })
+          .catch(err => console.error(err));
+        }
+        
+        // Seluruh script JS asli dari <DOCUMENT>, tapi ganti localStorage dengan panggil saveData() setelah perubahan
+        // ... (paste seluruh <script> dari dokumen asli, hapus localStorage calls)
+    </script>
+</body>
+</html>
