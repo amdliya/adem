@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Link Redirect Button</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .main-button {
+      background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 
+                  0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .main-button:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 
+                  0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    }
+    
+    .main-button:active {
+      transform: translateY(0) scale(0.98);
+    }
+    
+    .input-field {
+      background: rgba(255, 255, 255, 0.9);
+      transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+    }
+    
+    .save-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      transition: all 0.3s ease;
+    }
+    
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    .save-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .pulse-ring {
+      animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse-ring {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.1;
+        transform: scale(1.1);
+      }
+    }
+    
+    .toast {
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full m-0 p-0">
+  <div id="blockScreen" class="h-full w-full bg-red-500 flex flex-col items-center justify-center p-4 hidden">
+   <div class="text-center">
+    <svg class="w-20 h-20 text-white mx-auto mb-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 0H9m3 0h3m-8-7a4 4 0 11-8 0 4 4 0 018 0zm0 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+    </svg>
+    <h1 class="text-white text-2xl font-bold mb-2">Akses Ditolak</h1>
+    <p class="text-white text-lg mb-4">Halaman ini hanya dapat diakses melalui browser Exam</p>
+    <p class="text-white text-sm opacity-90">Silakan buka dengan aplikasi Exam di perangkat Anda</p>
+   </div>
+  </div>
+  <div id="app" class="h-full w-full gradient-bg flex flex-col items-center justify-center p-4 overflow-auto"><!-- Main Button Area -->
+   <div class="relative mb-8"><!-- Pulse Effect -->
+    <div class="absolute inset-0 rounded-full bg-white opacity-30 pulse-ring" style="transform: scale(1.2);"></div><!-- Main Clickable Button --> <a id="mainButton" href="https://google.com" target="_blank" rel="noopener noreferrer" class="main-button relative z-10 w-48 h-48 sm:w-56 sm:h-56 rounded-full flex flex-col items-center justify-center cursor-pointer block">
+     <svg class="w-12 h-12 sm:w-16 sm:h-16 text-purple-600 mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+     </svg><span id="buttonText" class="text-purple-700 font-semibold text-base sm:text-lg text-center px-4">Klik Di Sini</span> <span class="text-purple-400 text-xs mt-1">Tap untuk buka link</span> </a>
+   </div><!-- Settings Card -->
+   <div class="glass-card rounded-2xl p-5 sm:p-6 w-full max-w-sm">
+    <h3 class="text-white font-semibold text-lg mb-4 flex items-center gap-2">
+     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+     </svg> Ubah Link Tujuan</h3>
+    <div class="space-y-4">
+     <div><label class="text-white text-sm mb-2 block opacity-90">URL Link</label> <input type="url" id="linkInput" class="input-field w-full px-4 py-3 rounded-xl text-gray-700 text-sm outline-none" placeholder="https://contoh.com">
+     </div><button id="saveBtn" class="save-btn w-full py-3 rounded-xl text-white font-semibold flex items-center justify-center gap-2">
+      <svg id="saveBtnIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg><span id="saveBtnText">Simpan Link</span> </button>
+    </div><!-- Current Link Display -->
+    <div class="mt-4 pt-4 border-t border-white border-opacity-20">
+     <p class="text-white text-xs opacity-70 mb-1">Link saat ini:</p>
+     <p id="currentLink" class="text-white text-sm break-all opacity-90 font-mono">https://google.com</p>
+    </div>
+   </div><!-- Toast Notification -->
+   <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg hidden toast"><span id="toastMessage">Link berhasil disimpan!</span>
+   </div>
+  </div>
+  <script>
+    // Detect if browser is Exam
+    function isExamBrowser() {
+      const userAgent = navigator.userAgent || '';
+      
+      // Check for Exam app signatures
+      const examIndicators = [
+        /exam/i,
+        /exambrowser/i,
+        /examapp/i,
+        /x-exam/i,
+        /xexam/i
+      ];
+      
+      return examIndicators.some(indicator => indicator.test(userAgent));
+    }
+
+    // Check on page load
+    window.addEventListener('load', () => {
+      const blockScreen = document.getElementById('blockScreen');
+      const app = document.getElementById('app');
+      
+      if (!isExamBrowser()) {
+        blockScreen.classList.remove('hidden');
+        app.classList.add('hidden');
+      } else {
+        blockScreen.classList.add('hidden');
+        app.classList.remove('hidden');
+      }
+    });
+
+    // Also check immediately for faster detection
+    if (!isExamBrowser()) {
+      document.getElementById('blockScreen').classList.remove('hidden');
+      document.getElementById('app').classList.add('hidden');
+    }
+  </script> const defaultConfig = { button_label: 'Klik Di Sini', background_color: '#667eea', text_color: '#ffffff', button_color: '#ffffff', accent_color: '#764ba2' }; // Current data storage let currentData = []; let currentLinkUrl = 'https://google.com'; // DOM Elements const mainButton = document.getElementById('mainButton'); const buttonText = document.getElementById('buttonText'); const linkInput = document.getElementById('linkInput'); const saveBtn = document.getElementById('saveBtn'); const saveBtnIcon = document.getElementById('saveBtnIcon'); const saveBtnText = document.getElementById('saveBtnText'); const currentLinkDisplay = document.getElementById('currentLink'); const toast = document.getElementById('toast'); const toastMessage = document.getElementById('toastMessage'); // Show toast notification function showToast(message, isError = false) { toastMessage.textContent = message; toast.className = `fixed bottom-6 left-1/2 transform -translate-x-1/2 ${isError ? 'bg-red-500' : 'bg-green-500'} text-white px-6 py-3 rounded-full shadow-lg toast`; toast.classList.remove('hidden'); setTimeout(() =&gt; { toast.classList.add('hidden'); }, 3000); } // Update UI with current link function updateLinkDisplay(url) { mainButton.href = url; linkInput.value = url; currentLinkDisplay.textContent = url; currentLinkUrl = url; } // Set loading state function setLoading(isLoading) { saveBtn.disabled = isLoading; if (isLoading) { saveBtnIcon.innerHTML = '<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>'; saveBtnIcon.setAttribute('class', 'w-5 h-5 animate-spin'); saveBtnText.textContent = 'Menyimpan...'; } else { saveBtnIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>'; saveBtnIcon.setAttribute('class', 'w-5 h-5'); saveBtnText.textContent = 'Simpan Link'; } } // Data SDK handler const dataHandler = { onDataChanged(data) { currentData = data; if (data.length &gt; 0) { const latestLink = data[data.length - 1]; if (latestLink.link_url) { updateLinkDisplay(latestLink.link_url); } } } }; // Save link function async function saveLink() { const newUrl = linkInput.value.trim(); if (!newUrl) { showToast('Masukkan URL terlebih dahulu!', true); return; } setLoading(true); try { // If there's existing data, update it; otherwise create new if (currentData.length &gt; 0) { const existingRecord = currentData[currentData.length - 1]; existingRecord.link_url = newUrl; const result = await window.dataSdk.update(existingRecord); if (result.isOk) { showToast('Link berhasil diperbarui!'); } else { showToast('Gagal menyimpan link. Coba lagi.', true); } } else { // Check data limit if (currentData.length &gt;= 999) { showToast('Batas penyimpanan tercapai!', true); setLoading(false); return; } const result = await window.dataSdk.create({ link_url: newUrl, button_text: defaultConfig.button_label }); if (result.isOk) { showToast('Link berhasil disimpan!'); } else { showToast('Gagal menyimpan link. Coba lagi.', true); } } } catch (error) { showToast('Terjadi kesalahan. Coba lagi.', true); } setLoading(false); } // Element SDK render function async function onConfigChange(config) { const label = config.button_label || defaultConfig.button_label; buttonText.textContent = label; } // Initialize Element SDK if (window.elementSdk) { window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities: (config) =&gt; ({ recolorables: [ { get: () =&gt; config.background_color || defaultConfig.background_color, set: (value) =&gt; { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); } }, { get: () =&gt; config.accent_color || defaultConfig.accent_color, set: (value) =&gt; { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); } }, { get: () =&gt; config.text_color || defaultConfig.text_color, set: (value) =&gt; { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); } } ], borderables: [], fontEditable: undefined, fontSizeable: undefined }), mapToEditPanelValues: (config) =&gt; new Map([ ['button_label', config.button_label || defaultConfig.button_label] ]) }); } // Initialize Data SDK async function initDataSdk() { if (window.dataSdk) { const result = await window.dataSdk.init(dataHandler); if (!result.isOk) { console.error('Failed to initialize Data SDK'); } } } // Event listeners saveBtn.addEventListener('click', saveLink); // Allow Enter key to save linkInput.addEventListener('keypress', (e) =&gt; { if (e.key === 'Enter') { saveLink(); } }); // Initialize initDataSdk(); 
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d117c9595464070',t:'MTc3MTYyNzAyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
